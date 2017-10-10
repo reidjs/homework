@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'byebug'
 class Simon
   COLORS = %w(red blue green yellow)
@@ -57,3 +59,4 @@ class Simon
     @seq = []
   end
 end
+p "Here"
