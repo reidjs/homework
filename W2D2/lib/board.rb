@@ -31,11 +31,14 @@ class Board
     i = 0
     numstones = @cups[start_pos].length
     empty!(start_pos)
+    idx = start_pos
     while numstones > 0
 
       # index = (start_pos + i) % (@cups.length)
       # p index
-      idx = next_cup_index(start_pos + i)
+      # idx = next_cup_index(start_pos + i)
+      idx += 1
+      idx = 0 if idx >= @cups.length
       if idx == 6 && BUCKETS[6] != current_player_name
         p "skipping"
       elsif idx == 13 && BUCKETS[13] != current_player_name
@@ -44,18 +47,23 @@ class Board
         @cups[idx] << :stone
         numstones -= 1
       end
-      i += 1
+      # i += 1
       # p "#{index} #{@cups[index]}"
       # p @cups[index].length
       # @cups[index] << :stone
     end
+    # byebug
     render
+    next_turn(idx)
+
+    return :prompt if (idx == 6 && BUCKETS[6] == current_player_name)
+    return :prompt if (idx == 13 && BUCKETS[13] == current_player_name)
+    return idx if @cups[idx].length > 2
+    return :switch if @cups[idx].length == 1
+
+
     # :switch
       # @cups[start_pos + i]
-  end
-
-  def next_cup_index(current_idx)
-    (current_idx + 1) % (@cups.length)
   end
 
   def empty!(pos)
@@ -75,9 +83,28 @@ class Board
   end
 
   def one_side_empty?
+    left_empty = true
+    (0...6).each do |left|
+      if !@cups[left].empty?
+        left_empty = false
+      end
+    end
+    right_empty = true
+    (7...13).each do |right|
+      if !@cups[right].empty?
+        right_empty = false
+      end
+    end
+    left_empty || right_empty
   end
 
   def winner
+    player1_points = @cups[6].length
+    player2_points = @cups[13].length
+    return :draw if player2_points == player1_points
+    p BUCKETS
+    return BUCKETS[13] if player2_points > player1_points
+    return BUCKETS[6] if player2_points < player1_points
   end
 end
 
