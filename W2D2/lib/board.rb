@@ -1,10 +1,14 @@
 require 'byebug'
 class Board
   attr_accessor :cups
+  BUCKETS = { 6 => "name1", 13 => "name2"}
   def initialize(name1, name2)
     @cups = Array.new(14) {[:stone] * 4}
+    BUCKETS[6] = name1
+    BUCKETS[13] = name2
     empty!(6)
     empty!(13)
+
   end
 
   def place_stones
@@ -24,24 +28,34 @@ class Board
   end
 
   def make_move(start_pos, current_player_name)
-    i = 1
+    i = 0
     numstones = @cups[start_pos].length
     empty!(start_pos)
-    while i <= numstones
+    while numstones > 0
 
-      index = (start_pos + i) % (@cups.length)
-      p index
+      # index = (start_pos + i) % (@cups.length)
+      # p index
+      idx = next_cup_index(start_pos + i)
+      if idx == 6 && BUCKETS[6] != current_player_name
+        p "skipping"
+      elsif idx == 13 && BUCKETS[13] != current_player_name
+        p "skipping"
+      else
+        @cups[idx] << :stone
+        numstones -= 1
+      end
+      i += 1
       # p "#{index} #{@cups[index]}"
       # p @cups[index].length
-      @cups[index] << :stone
-      i += 1
+      # @cups[index] << :stone
     end
     render
-    next_turn(index - 1)
-    p @cups[index]
-    return :switch if @cups[index - 1].empty?
-    :switch
+    # :switch
       # @cups[start_pos + i]
+  end
+
+  def next_cup_index(current_idx)
+    (current_idx + 1) % (@cups.length)
   end
 
   def empty!(pos)
