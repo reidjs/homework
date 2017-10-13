@@ -1,10 +1,11 @@
+
+
 class LRUCache
 
   def initialize(limit)
-    @hash = {}
+    @data = HashMap.new
     #element => time
-    @tail = nil
-    @head = nil
+
   end
 
   def count
@@ -13,7 +14,8 @@ class LRUCache
 
   def add(el)
     # adds element to cache according to LRU principle
-    @hash[
+    #add to head remove from tail
+    @hash[el]
   end
 
   def show
@@ -26,8 +28,42 @@ class LRUCache
 
 end
 
+class HashMap
+  def initialize
+    @hash = {}
+  end
+  def [](key)
+    @hash[key]
+  end
+  def []=(key, value)
+    @hash[key] = value
+  end
+  def insert
+
+  end
+  def eject
+
+  end
+  def delete
+
+  end 
+end
+
+class LinkedList
+  def initialize
+    @head_sentinel = Node.new
+    @tail_sentinel = Node.new
+  end
+  #dont use on sentinels@!!!
+  def remove_node(node)
+    node.prev.next = node.next
+    node.next.prev = node.prev
+  end
+end
+
 class Node
-  def initialize(val, prev_node = nil, next_node = nil)
+  attr_accessor :prev, :next, :val
+  def initialize(val=nil, prev_node = nil, next_node = nil)
     @val = val
     @prev = prev_node
     @next = next_node
