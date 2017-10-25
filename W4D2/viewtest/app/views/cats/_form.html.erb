@@ -1,0 +1,29 @@
+<!-- <h1>Edit existing cat</h1> -->
+<!--
+Needs to change: action (done)
+, hidden input patch (done)
+, prefilled values, submit button
+  -->
+<!-- action: url to send data -->
+<!-- method: the http method to be used -->
+<% if action == :edit %>
+  <% action_url = cat_url(cat) %>
+<% else %>
+  <% action_url = cats_url %>
+<% end  %>
+<form action=" <%= action_url %>" method="post">
+  <% if action == :edit %>
+    <input type="hidden" name="_method" value="patch">
+  <% end %>
+  <label for="cat_name">Cat name</label>
+  <!-- name gives the parameter that you are passing to the model -->
+  <input id="cat_name" type="text" name="cat[name]" value="<%= cat.name %>">
+
+  <select name="cat[color]">
+    <option disabled>Pick Color</option>
+    <option value="red" <%= cat.color == "red" ? "selected" : "" %> >Red</option>
+    <option value="green" <%= cat.color == "green" ? "selected" : "" %>>Green</option>
+    <option value="blue" <%= cat.color == "blue" ? "selected" : "" %>>Blue</option>
+  </select>
+  <input type="submit" value="Submit!">
+</form>
