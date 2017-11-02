@@ -98,15 +98,36 @@ herd.forEach(function(el) {
   paradeHelper(el)
 })
 
-
+// var middle = []
+// function dinerBreakfast(args=[]) {
+//   let start = `I'd like cheesy scrambled eggs`
+//   args.forEach(function(el){
+//     middle.push[]
+//   })
+//   end = ' please';
+//   return start + middle + end
+// }
+// console.log(dinerBreakfast([chocolate chip]));
 function dinerBreakfast() {
+  let order = "I'd like cheesy scrambled eggs";
+  function addFood(additionalFood) {
+    order += " and "
+    order += additionalFood;
+    console.log(order + " please");
 
+    return addFood
+  }
+  return addFood
 }
 
 
-
-
-
+//
+// > let bfastOrder = dinerBreakfast();
+// "I'd like cheesy scrambled eggs please"
+// > bfastOrder("chocolate chip pancakes");
+// "I'd like cheesy scrambled eggs and chocolate chip pancakes please."
+// > bfastOrder("grits");
+// "I'd like cheesy scrambled eggs and chocolate chip pancakes and grits please."
 
 
 
