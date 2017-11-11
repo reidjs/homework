@@ -23,7 +23,7 @@ class Average extends React.Component {
         // use the action creator 'selectCurrency' to build the object to
         // be dispatched
         this.props.store.dispatch(
-          this.selectCurrency(resp.base, resp.rates)
+          this.averageCurrency(resp.base, resp.rates)
         );
       }.bind(this)
     });
@@ -31,9 +31,31 @@ class Average extends React.Component {
 
   render() {
     const { rates, baseCurrency } = this.props.store.getState();
+
+
+    const currencyOptions = this.currencies.map( (currency) => (
+        <div onClick={ () => { this.fetchRates(currency) }}
+             key={currency}
+             className="currency-option">
+          {currency}
+        </div>
+      )
+    );
+
+    const currencyNames = Object.keys(rates);
+    const currencyRates = currencyNames.map( (currency) => (
+      <Currency name={currency}
+                rate={rates[currency]}
+                key={currency} />
+      )
+    );
     return (
       <div>
         <h1>Average exchange rate</h1>
+          <div className="currency-selector">
+            Get Average:
+            {currencyOptions}
+          </div>
       </div>
     );
   }

@@ -4,10 +4,10 @@ const selectCurrency = (baseCurrency, rates) => ({
   rates
 });
 
-const averageCurrency = (baseCurrency, rates) => ({
+const averageCurrency = (baseCurrency, rate) => ({
   type: "AVERAGE_EXCHANGE_RATE",
   baseCurrency,
-  rates
+  rate
 });
 
 // window.selectCurrency = selectCurrency; //for testing

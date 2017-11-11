@@ -13,17 +13,17 @@ const reducer = (state = initialState, action) => {
       // console.log(nextState);
       return nextState;
     case "AVERAGE_EXCHANGE_RATE":
-      let rates = Object.keys(action.rates);
-      let sumRates = rates.reduce(function(tot, el){
-        return tot + el;
-      });
-      console.log(sumRates);
-      let avg = sumRates/Object.keys.length;
-      console.log(avg);
+      // let rates = Object.keys(action.rates);
+      // let sumRates = rates.reduce(function(tot, el){
+      //   return tot + el;
+      // });
+      // console.log(sumRates);
+      // let avg = sumRates/Object.keys.length;
+      // console.log(avg);
       // debugger
       let averageRateState = {
         baseCurrency: action.baseCurrency,
-        average_rate: avg
+        rate: 1
       };
       console.log(averageRateState);
       return averageRateState;

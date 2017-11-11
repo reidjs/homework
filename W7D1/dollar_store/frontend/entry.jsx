@@ -8,12 +8,12 @@ class Root extends React.Component {
   render() {
     return (
       <div>
-        <Widget store={store} />
         <Average store={store} />
       </div>
     );
   }
 }
+// <Widget store={store} />
 
 document.addEventListener("DOMContentLoaded", function(){
   ReactDOM.render(<Root />, document.getElementById('root'));
