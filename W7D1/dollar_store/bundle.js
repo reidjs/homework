@@ -9776,11 +9776,11 @@ var selectCurrency = function selectCurrency(baseCurrency, rates) {
   };
 };
 
-var averageCurrency = function averageCurrency(baseCurrency, rates) {
+var averageCurrency = function averageCurrency(baseCurrency, rate) {
   return {
     type: "AVERAGE_EXCHANGE_RATE",
     baseCurrency: baseCurrency,
-    rates: rates
+    rate: rate
   };
 };
 
@@ -9878,7 +9878,6 @@ var Root = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_widget2.default, { store: _store2.default }),
         _react2.default.createElement(_average2.default, { store: _store2.default })
       );
     }
@@ -9886,6 +9885,7 @@ var Root = function (_React$Component) {
 
   return Root;
 }(_react2.default.Component);
+// <Widget store={store} />
 
 document.addEventListener("DOMContentLoaded", function () {
   _reactDom2.default.render(_react2.default.createElement(Root, null), document.getElementById('root'));
@@ -23421,17 +23421,17 @@ var reducer = function reducer() {
       // console.log(nextState);
       return nextState;
     case "AVERAGE_EXCHANGE_RATE":
-      var rates = Object.keys(action.rates);
-      var sumRates = rates.reduce(function (tot, el) {
-        return tot + el;
-      });
-      console.log(sumRates);
-      var avg = sumRates / Object.keys.length;
-      console.log(avg);
+      // let rates = Object.keys(action.rates);
+      // let sumRates = rates.reduce(function(tot, el){
+      //   return tot + el;
+      // });
+      // console.log(sumRates);
+      // let avg = sumRates/Object.keys.length;
+      // console.log(avg);
       // debugger
       var averageRateState = {
         baseCurrency: action.baseCurrency,
-        average_rate: avg
+        rate: 1
       };
       console.log(averageRateState);
       return averageRateState;
@@ -23502,17 +23502,37 @@ var Average = function (_React$Component) {
           // tell the store to update with the new base currency and rates;
           // use the action creator 'selectCurrency' to build the object to
           // be dispatched
-          this.props.store.dispatch(this.selectCurrency(resp.base, resp.rates));
+          this.props.store.dispatch(this.averageCurrency(resp.base, resp.rates));
         }.bind(this)
       });
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var _props$store$getState = this.props.store.getState(),
           rates = _props$store$getState.rates,
           baseCurrency = _props$store$getState.baseCurrency;
 
+      var currencyOptions = this.currencies.map(function (currency) {
+        return _react2.default.createElement(
+          'div',
+          { onClick: function onClick() {
+              _this2.fetchRates(currency);
+            },
+            key: currency,
+            className: 'currency-option' },
+          currency
+        );
+      });
+
+      var currencyNames = Object.keys(rates);
+      var currencyRates = currencyNames.map(function (currency) {
+        return _react2.default.createElement(_currency2.default, { name: currency,
+          rate: rates[currency],
+          key: currency });
+      });
       return _react2.default.createElement(
         'div',
         null,
@@ -23520,6 +23540,12 @@ var Average = function (_React$Component) {
           'h1',
           null,
           'Average exchange rate'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'currency-selector' },
+          'Get Average:',
+          currencyOptions
         )
       );
     }
