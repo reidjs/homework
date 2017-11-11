@@ -9619,8 +9619,6 @@ var _currency2 = _interopRequireDefault(_currency);
 
 var _actions = __webpack_require__(85);
 
-var _actions2 = _interopRequireDefault(_actions);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9642,7 +9640,7 @@ var Widget = function (_React$Component) {
     // require this component to re-render whenever the store's state changes
     _this.props.store.subscribe(_this.forceUpdate);
     _this.currencies = ["USD", "EUR", "CAD", "JPY", "GBP", "CNY"];
-    _this.selectCurrency = _actions2.default.bind(_this);
+    _this.selectCurrency = _actions.selectCurrency.bind(_this);
     return _this;
   }
 
@@ -9778,8 +9776,18 @@ var selectCurrency = function selectCurrency(baseCurrency, rates) {
   };
 };
 
-window.selectCurrency = selectCurrency;
-exports.default = selectCurrency;
+var averageCurrency = function averageCurrency(baseCurrency, rates) {
+  return {
+    type: "AVERAGE_EXCHANGE_RATE",
+    baseCurrency: baseCurrency,
+    rates: rates
+  };
+};
+
+// window.selectCurrency = selectCurrency; //for testing
+exports.selectCurrency = selectCurrency;
+exports.averageCurrency = averageCurrency;
+// export default averageCurrency;
 
 /***/ }),
 /* 86 */
@@ -9825,6 +9833,8 @@ exports.default = Currency;
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(32);
 
 var _react2 = _interopRequireDefault(_react);
@@ -9837,14 +9847,48 @@ var _widget = __webpack_require__(82);
 
 var _widget2 = _interopRequireDefault(_widget);
 
+var _average = __webpack_require__(211);
+
+var _average2 = _interopRequireDefault(_average);
+
 var _store = __webpack_require__(83);
 
 var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Root = function (_React$Component) {
+  _inherits(Root, _React$Component);
+
+  function Root() {
+    _classCallCheck(this, Root);
+
+    return _possibleConstructorReturn(this, (Root.__proto__ || Object.getPrototypeOf(Root)).apply(this, arguments));
+  }
+
+  _createClass(Root, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_widget2.default, { store: _store2.default }),
+        _react2.default.createElement(_average2.default, { store: _store2.default })
+      );
+    }
+  }]);
+
+  return Root;
+}(_react2.default.Component);
+
 document.addEventListener("DOMContentLoaded", function () {
-  _reactDom2.default.render(_react2.default.createElement(_widget2.default, { store: _store2.default }), document.getElementById('root'));
+  _reactDom2.default.render(_react2.default.createElement(Root, null), document.getElementById('root'));
 });
 
 /***/ }),
@@ -23374,14 +23418,117 @@ var reducer = function reducer() {
         baseCurrency: action.baseCurrency,
         rates: action.rates
       };
+      // console.log(nextState);
       return nextState;
+    case "AVERAGE_EXCHANGE_RATE":
+      var rates = Object.keys(action.rates);
+      var sumRates = rates.reduce(function (tot, el) {
+        return tot + el;
+      });
+      console.log(sumRates);
+      var avg = sumRates / Object.keys.length;
+      console.log(avg);
+      // debugger
+      var averageRateState = {
+        baseCurrency: action.baseCurrency,
+        average_rate: avg
+      };
+      console.log(averageRateState);
+      return averageRateState;
     default:
       return state; // remove this and fill out the body of the reducer function
   }
 };
-window.reducer = reducer;
+window.reducer = reducer; //for testing
 
 exports.default = reducer;
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(32);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _currency = __webpack_require__(86);
+
+var _currency2 = _interopRequireDefault(_currency);
+
+var _actions = __webpack_require__(85);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Average = function (_React$Component) {
+  _inherits(Average, _React$Component);
+
+  function Average(props) {
+    _classCallCheck(this, Average);
+
+    var _this = _possibleConstructorReturn(this, (Average.__proto__ || Object.getPrototypeOf(Average)).call(this, props));
+
+    _this.forceUpdate = _this.forceUpdate.bind(_this);
+    _this.props.store.subscribe(_this.forceUpdate);
+    _this.currencies = ["USD", "EUR", "CAD", "JPY", "GBP", "CNY"];
+    _this.averageCurrency = _actions.averageCurrency.bind(_this);
+
+    return _this;
+  }
+
+  _createClass(Average, [{
+    key: 'fetchRates',
+    value: function fetchRates(currency) {
+      $.ajax({
+        url: 'http://api.fixer.io/latest?base=' + currency,
+        type: "GET",
+        dataType: "JSON",
+        success: function (resp) {
+
+          // tell the store to update with the new base currency and rates;
+          // use the action creator 'selectCurrency' to build the object to
+          // be dispatched
+          this.props.store.dispatch(this.selectCurrency(resp.base, resp.rates));
+        }.bind(this)
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props$store$getState = this.props.store.getState(),
+          rates = _props$store$getState.rates,
+          baseCurrency = _props$store$getState.baseCurrency;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Average exchange rate'
+        )
+      );
+    }
+  }]);
+
+  return Average;
+}(_react2.default.Component);
+
+exports.default = Average;
 
 /***/ })
 /******/ ]);
