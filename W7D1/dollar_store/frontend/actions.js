@@ -4,5 +4,12 @@ const selectCurrency = (baseCurrency, rates) => ({
   rates
 });
 
-window.selectCurrency = selectCurrency;
-export default selectCurrency;
+const averageCurrency = (baseCurrency, rates) => ({
+  type: "AVERAGE_EXCHANGE_RATE",
+  baseCurrency,
+  rates
+});
+
+// window.selectCurrency = selectCurrency; //for testing
+export {selectCurrency, averageCurrency};
+// export default averageCurrency;

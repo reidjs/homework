@@ -13,6 +13,10 @@
 .currency-option {
   float: right;
   padding-left: 5px;
+  text-decoration: underline;
+}
+.currency-option:hover {
+  font-weight: bold;
 }
 
 .rates-list {
