@@ -8,6 +8,7 @@ class Root extends React.Component {
   render() {
     return (
       <div>
+        <Widget store={store} />
         <Average store={store} />
       </div>
     );

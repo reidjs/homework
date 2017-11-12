@@ -30,7 +30,7 @@ class Average extends React.Component {
   }
 
   render() {
-    const { rates, baseCurrency } = this.props.store.getState();
+    const { rates, baseCurrency, averageRate } = this.props.store.getState();
 
 
     const currencyOptions = this.currencies.map( (currency) => (
@@ -41,8 +41,9 @@ class Average extends React.Component {
         </div>
       )
     );
-
+    console.log(rates);
     const currencyNames = Object.keys(rates);
+
     const currencyRates = currencyNames.map( (currency) => (
       <Currency name={currency}
                 rate={rates[currency]}
@@ -53,12 +54,15 @@ class Average extends React.Component {
       <div>
         <h1>Average exchange rate</h1>
           <div className="currency-selector">
-            Get Average:
-            {currencyOptions}
+            Get Average: {currencyOptions}
+          </div>
+          <div className= "average-rate">
+            {averageRate}
           </div>
       </div>
     );
   }
 }
+// {currencyOptions}
 
 export default Average;
