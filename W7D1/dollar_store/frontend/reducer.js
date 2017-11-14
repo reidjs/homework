@@ -1,6 +1,7 @@
 const initialState = {
   baseCurrency: "Please select",
-  rates: {}
+  rates: {},
+  averageRate: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -8,22 +9,26 @@ const reducer = (state = initialState, action) => {
     case "SWITCH_CURRENCY":
       let nextState = {
         baseCurrency: action.baseCurrency,
-        rates: action.rates
+        rates: action.rates,
+        averageRate: 0
       };
       // console.log(nextState);
       return nextState;
     case "AVERAGE_EXCHANGE_RATE":
-      // let rates = Object.keys(action.rates);
-      // let sumRates = rates.reduce(function(tot, el){
-      //   return tot + el;
-      // });
+      let rates = Object.keys(action.rates);
+      // console.log(rates);
+      let sumRates = rates.reduce(function(tot, el){
+        // console.log(action.rates[el]);
+        return tot + action.rates[el];
+      }, 0);
       // console.log(sumRates);
-      // let avg = sumRates/Object.keys.length;
-      // console.log(avg);
+      let avg = sumRates/Object.keys.length;
+      console.log(avg);
       // debugger
       let averageRateState = {
         baseCurrency: action.baseCurrency,
-        rate: 1
+        rates: {},
+        averageRate: avg
       };
       console.log(averageRateState);
       return averageRateState;
