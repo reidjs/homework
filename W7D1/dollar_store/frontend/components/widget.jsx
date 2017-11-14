@@ -2,7 +2,7 @@ import React from 'react';
 import Currency from './currency';
 import {selectCurrency} from '../actions';
 
-class Widget extends React.Component {
+export default class Widget extends React.Component {
 
   constructor(props) {
     super(props);
@@ -70,6 +70,3 @@ class Widget extends React.Component {
     );
   }
 };
-
-
-export default Widget;

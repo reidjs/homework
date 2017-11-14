@@ -9,6 +9,7 @@ class Root extends React.Component {
     return (
       <div>
         <Average store={store} />
+        <Widget store={store} />
       </div>
     );
   }
