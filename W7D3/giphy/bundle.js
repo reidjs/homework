@@ -12057,6 +12057,10 @@ module.exports = g;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _react = __webpack_require__(17);
 
 var _react2 = _interopRequireDefault(_react);
@@ -12068,6 +12072,21 @@ var _giphys_search_container = __webpack_require__(111);
 var _giphys_search_container2 = _interopRequireDefault(_giphys_search_container);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// <div>
+var Root = function Root(_ref) {
+  var store = _ref.store;
+
+  return _react2.default.createElement(
+    _reactRedux.Provider,
+    { store: store },
+    _react2.default.createElement(_giphys_search_container2.default, null)
+  );
+};
+// </div>
+// <div>ff</div>
+
+exports.default = Root;
 
 /***/ }),
 /* 106 */
@@ -12115,6 +12134,10 @@ module.exports = __webpack_require__(79);
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _react = __webpack_require__(17);
 
 var _react2 = _interopRequireDefault(_react);
@@ -12124,6 +12147,12 @@ var _giphys_index_item = __webpack_require__(109);
 var _giphys_index_item2 = _interopRequireDefault(_giphys_index_item);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var GiphysIndex = function GiphysIndex(gifs) {
+  return _react2.default.createElement('div', null);
+};
+
+exports.default = GiphysIndex;
 
 /***/ }),
 /* 109 */
@@ -12139,6 +12168,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(17);
 
 var _react2 = _interopRequireDefault(_react);
@@ -12147,23 +12182,65 @@ var _giphys_index = __webpack_require__(108);
 
 var _giphys_index2 = _interopRequireDefault(_giphys_index);
 
-var _giphy_actions = __webpack_require__(58);
-
-var _store = __webpack_require__(106);
-
-var _store2 = _interopRequireDefault(_store);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.receiveSearchGiphys = _giphy_actions.receiveSearchGiphys;
-// import { fetchSearchGiphys } from '../util/api_util';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-window.fetchSearchGiphys = _giphy_actions.fetchSearchGiphys;
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-document.addEventListener("DOMContentLoaded", function () {
-  var store = (0, _store2.default)();
-  window.store = store;
-});
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GiphysSearch = function (_React$Component) {
+  _inherits(GiphysSearch, _React$Component);
+
+  function GiphysSearch(props) {
+    _classCallCheck(this, GiphysSearch);
+
+    var _this = _possibleConstructorReturn(this, (GiphysSearch.__proto__ || Object.getPrototypeOf(GiphysSearch)).call(this, props));
+
+    _this.state = { searchQuery: "" };
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleClick = _this.handleClick.bind(_this);
+
+    return _this;
+  }
+
+  _createClass(GiphysSearch, [{
+    key: 'handleChange',
+    value: function handleChange(e) {
+      var searchQuery = e.target.value;
+      // console.log("query:", searchQuery);
+      this.setState({ searchQuery: e.target.value });
+    }
+    // handleChange(e) {
+    // }
+
+  }, {
+    key: 'handleClick',
+    value: function handleClick(e) {
+      this.props.fetchSearchGiphys(e.target.value);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'search-bar' },
+        _react2.default.createElement('input', { onChange: this.handleChange, value: this.state.searchQuery }),
+        _react2.default.createElement(
+          'button',
+          { onClick: this.handleClick },
+          'Submit'
+        ),
+        _react2.default.createElement(_giphys_index2.default, null)
+      );
+    }
+  }]);
+
+  return GiphysSearch;
+}(_react2.default.Component);
+
+exports.default = GiphysSearch;
 
 /***/ }),
 /* 111 */
@@ -12171,6 +12248,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _reactRedux = __webpack_require__(70);
 
@@ -12181,6 +12262,19 @@ var _giphys_search2 = _interopRequireDefault(_giphys_search);
 var _giphy_actions = __webpack_require__(58);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    giphys: state.giphys
+  };
+};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { fetchSearchGiphys: function fetchSearchGiphys(searchTerm) {
+      return dispatch((0, _giphy_actions.fetchSearchGiphys)(searchTerm));
+    } };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_giphys_search2.default);
 
 /***/ }),
 /* 112 */
@@ -12206,6 +12300,13 @@ var _root = __webpack_require__(105);
 var _root2 = _interopRequireDefault(_root);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+document.addEventListener("DOMContentLoaded", function () {
+  var store = (0, _store2.default)();
+  // window.store = store;
+  var root = document.getElementById('root');
+  _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: store }), root);
+});
 
 /***/ }),
 /* 113 */
