@@ -6958,6 +6958,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var RECEIVE_SEARCH_GIPHYS = exports.RECEIVE_SEARCH_GIPHYS = 'RECEIVE_SEARCH_GIPHYS';
 
 var receiveSearchGiphys = exports.receiveSearchGiphys = function receiveSearchGiphys(giphys) {
+  console.log('receive search giphys', giphys);
   return {
     type: RECEIVE_SEARCH_GIPHYS,
     giphys: giphys
@@ -6966,6 +6967,7 @@ var receiveSearchGiphys = exports.receiveSearchGiphys = function receiveSearchGi
 
 //thunk action
 var fetchSearchGiphys = exports.fetchSearchGiphys = function fetchSearchGiphys(searchTerm) {
+  console.log('fetch giphys:', searchTerm);
   return function (dispatch) {
     APIUtil.fetchSearchGiphys(searchTerm).then(function (giphys) {
       return dispatch(receiveSearchGiphys(giphys.data));
@@ -12148,9 +12150,34 @@ var _giphys_index_item2 = _interopRequireDefault(_giphys_index_item);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var GiphysIndex = function GiphysIndex(gifs) {
-  return _react2.default.createElement('div', null);
+var x = "https://giphy.com/embed/XKnvIs2ELq7du";
+var Arrayize = function Arrayize(gifs) {
+  var keys = Object.keys(gifs);
+  keys.map(function (el) {
+    console.log("gif data:", gifs[el]);
+    return gifs[el].embed_url;
+  });
+  // console.log(keys);
 };
+var GiphysIndex = function GiphysIndex(_ref) {
+  var giphys = _ref.giphys;
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'p',
+      null,
+      Arrayize(giphys)
+    ),
+    _react2.default.createElement(
+      'ul',
+      null,
+      _react2.default.createElement(_giphys_index_item2.default, { url: x })
+    )
+  );
+};
+// <iframe src={x} width="480" height="270" frameBorder="0" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/asdf-movie-XKnvIs2ELq7du">via GIPHY</a></p>
 
 exports.default = GiphysIndex;
 
@@ -12160,6 +12187,35 @@ exports.default = GiphysIndex;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(17);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var GiphysIndexItem = function GiphysIndexItem(url) {
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement("iframe", { src: url, width: "480", height: "270", frameBorder: "0", allowFullScreen: true }),
+    _react2.default.createElement(
+      "p",
+      null,
+      _react2.default.createElement(
+        "a",
+        { href: "https://giphy.com/gifs/asdf-movie-XKnvIs2ELq7du" },
+        "via GIPHY"
+      )
+    )
+  );
+};
+
+exports.default = GiphysIndexItem;
 
 /***/ }),
 /* 110 */
@@ -12201,13 +12257,13 @@ var GiphysSearch = function (_React$Component) {
     _this.state = { searchQuery: "" };
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleClick = _this.handleClick.bind(_this);
-
     return _this;
   }
 
   _createClass(GiphysSearch, [{
     key: 'handleChange',
     value: function handleChange(e) {
+      // console.log(this.props.giphys);
       var searchQuery = e.target.value;
       // console.log("query:", searchQuery);
       this.setState({ searchQuery: e.target.value });
@@ -12218,7 +12274,8 @@ var GiphysSearch = function (_React$Component) {
   }, {
     key: 'handleClick',
     value: function handleClick(e) {
-      this.props.fetchSearchGiphys(e.target.value);
+      // console.log(this.state.searchQuery);
+      this.props.fetchSearchGiphys(this.state.searchQuery);
     }
   }, {
     key: 'render',
@@ -12232,7 +12289,7 @@ var GiphysSearch = function (_React$Component) {
           { onClick: this.handleClick },
           'Submit'
         ),
-        _react2.default.createElement(_giphys_index2.default, null)
+        _react2.default.createElement(_giphys_index2.default, { giphys: this.props.giphys })
       );
     }
   }]);
