@@ -12140,12 +12140,15 @@ var _giphys_index2 = _interopRequireDefault(_giphys_index);
 
 var _api_util = __webpack_require__(115);
 
+var _giphy_actions = __webpack_require__(58);
+
 var _store = __webpack_require__(106);
 
 var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+window.receiveSearchGiphys = _giphy_actions.receiveSearchGiphys;
 window.fetchSearchGiphys = _api_util.fetchSearchGiphys;
 
 document.addEventListener("DOMContentLoaded", function () {
