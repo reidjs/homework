@@ -6947,7 +6947,7 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.receiveSearchGiphys = exports.RECEIVE_SEARCH_GIPHYS = undefined;
+exports.fetchSearchGiphys = exports.receiveSearchGiphys = exports.RECEIVE_SEARCH_GIPHYS = undefined;
 
 var _api_util = __webpack_require__(115);
 
@@ -6961,6 +6961,15 @@ var receiveSearchGiphys = exports.receiveSearchGiphys = function receiveSearchGi
   return {
     type: RECEIVE_SEARCH_GIPHYS,
     giphys: giphys
+  };
+};
+
+//thunk action
+var fetchSearchGiphys = exports.fetchSearchGiphys = function fetchSearchGiphys(searchTerm) {
+  return function (dispatch) {
+    APIUtil.fetchSearchGiphys(searchTerm).then(function (giphys) {
+      return dispatch(receiveSearchGiphys(giphys.data));
+    });
   };
 };
 
@@ -12084,7 +12093,7 @@ var _root_reducer2 = _interopRequireDefault(_root_reducer);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var configureStore = function configureStore() {
-  return (0, _redux.createStore)(_root_reducer2.default);
+  return (0, _redux.createStore)(_root_reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 };
 
 exports.default = configureStore;
@@ -12138,8 +12147,6 @@ var _giphys_index = __webpack_require__(108);
 
 var _giphys_index2 = _interopRequireDefault(_giphys_index);
 
-var _api_util = __webpack_require__(115);
-
 var _giphy_actions = __webpack_require__(58);
 
 var _store = __webpack_require__(106);
@@ -12149,7 +12156,9 @@ var _store2 = _interopRequireDefault(_store);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.receiveSearchGiphys = _giphy_actions.receiveSearchGiphys;
-window.fetchSearchGiphys = _api_util.fetchSearchGiphys;
+// import { fetchSearchGiphys } from '../util/api_util';
+
+window.fetchSearchGiphys = _giphy_actions.fetchSearchGiphys;
 
 document.addEventListener("DOMContentLoaded", function () {
   var store = (0, _store2.default)();
